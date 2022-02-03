@@ -46,17 +46,14 @@ const getBlockInfo = async () => {
 
 const app: Application = express();
 
-app.get("/", async (req: Request, res: Response) => {
-    try {
-        const blockInfo = await getBlockInfo();
-        return res.status(200).json({
-            result: blockInfo,
-        });
-    } catch (err: any) {
-        res.status(500).json({
-            err: err.toString(),
-        });
+app.get('/', async (req: Request, res: Response) => {
+    const blockInfo = await getBlockInfo();
+    if (!blockInfo) {
+        throw new Error("Data couldn't be reached.");
     }
+    res.status(200).json({
+        result: blockInfo,
+    });
 });
 
 app.listen(8080, () => console.log("Running."));
